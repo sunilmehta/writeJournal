@@ -14,7 +14,7 @@ import de.flapdoodle.embed.process.io.directories.PlatformTempDir
 import de.flapdoodle.embed.process.runtime.Network
 
 object PortServer {
-  lazy val freePort = 27017
+  lazy val freePort = Network.getFreeServerPort
 }
 
 import PortServer._

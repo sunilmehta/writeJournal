@@ -73,7 +73,7 @@ class CasbahJournalRootSpec extends EmbeddedMongoSupport
     }
     "persist valid messages" in {
       persistExecute(mongoCollection, messages(pidOne).flatMap {
-        message => persistentReprToDBObjectExecute(message, toBytes)(rejectNonSerializableObjects = false).toOption
+        message => persistentReprToDBObjectExecute(mongoCollection, message, toBytes)(rejectNonSerializableObjects = false).toOption
       })
     }
     "return the highest sequenceNr for a given persistenceId" in {
@@ -94,7 +94,7 @@ class CasbahJournalRootSpec extends EmbeddedMongoSupport
       var msgs: immutable.Seq[PersistentRepr] = List.empty[PersistentRepr]
       minSnr to maxSnr foreach(snr => msgs = msgs :+ persistentRepr(pidTwo, snr))
       persistExecute(mongoCollection, messages(pidTwo).flatMap {
-        message => persistentReprToDBObjectExecute(message, toBytes)(rejectNonSerializableObjects = false).toOption
+        message => persistentReprToDBObjectExecute(mongoCollection, message, toBytes)(rejectNonSerializableObjects = false).toOption
       })
       deleteToExecute(mongoCollection, concern, pidTwo, 5L, toBytes)
       val iter: Iterator[PersistentRepr] =
